@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+
+    environment {
+        SPARK_SUBMIT = '/path/to/spark-submit' // Path to spark-submit
+        PYTHON = '/path/to/python'            // Path to Python interpreter
+        MODEL_PATH = 'models/xgboost_model.json'
+        DEPLOY_SCRIPT = 'deploy.py'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // Clone the repository containing PySpark scripts
+                git 'https://github.com/your-repo/my-ml-project.git'
+            }
+        }
+
+        stage('Data Ingestion') {
+            steps {
+                // Run data ingestion script
+                sh "${SPARK_SUBMIT} data_ingestion.py"
+            }
+        }
+
+        stage('Data Preprocessing') {
+            steps {
+                // Run data preprocessing script
+                sh "${SPARK_SUBMIT} data_preprocessing.py"
+            }
+        }
+
+        stage('Train Model') {
+            steps {
+                // Train the model using Spark
+                sh "${SPARK_SUBMIT} train.py"
+            }
+        }
+
+        stage('Evaluate Model') {
+            steps {
+                // Evaluate the model
+                sh "${PYTHON} evaluate.py"
+            }
+        }
+
+        stage('Deploy Model') {
+            steps {
+                script {
+                    // Start the FastAPI server in the background
+                    sh """
+                        pkill -f ${DEPLOY_SCRIPT} || true
+                        nohup ${PYTHON} ${DEPLOY_SCRIPT} > fastapi.log 2>&1 &
+                    """
+                    echo 'Model deployed successfully using FastAPI!'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Check logs for details.'
+        }
+    }
+}
