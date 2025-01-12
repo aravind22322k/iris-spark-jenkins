@@ -1,0 +1,20 @@
+# PySpark for distributed processing
+pyspark==3.4.0
+
+# XGBoost for machine learning model training
+xgboost==1.7.6
+
+# FastAPI for deploying the model as a web service
+fastapi==0.95.2
+
+# Uvicorn for running the FastAPI server
+uvicorn[standard]==0.22.0
+
+# Pandas for data manipulation (used with XGBoost)
+pandas==1.5.3
+
+# Scikit-learn for evaluation metrics
+scikit-learn==1.2.2
+
+# Numpy for numerical computations
+numpy==1.24.3
