@@ -11,6 +11,6 @@ def ingest_data(input_path):
     return data
 
 if __name__ == "__main__":
-    input_path = "path/to/iris.csv"  # Replace with the actual path
+    input_path = "data/iris.csv"  # Replace with the actual path
     data = ingest_data(input_path)
     data.write.parquet("data/raw_data.parquet")
