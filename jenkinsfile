@@ -8,11 +8,18 @@ pipeline {
         DEPLOY_SCRIPT = 'deploy.py'
     }
 
-    stages {
+stages {
         stage('Clone Repository') {
+            
             steps {
-                // Clone the repository containing PySpark scripts
-                git 'https://github.com/your-repo/my-ml-project.git'
+                git branch: 'main',
+                    url: 'https://github.com/aravind22322k/my-ml-project.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip install -r requirements.txt'
             }
         }
 
