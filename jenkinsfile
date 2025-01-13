@@ -13,7 +13,7 @@ stages {
             
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/aravind22322k/my-ml-project.git'
+                    url: 'https://github.com/aravind22322k/iris-spark-jenkins.git'
             }
         }
 
@@ -44,12 +44,12 @@ stages {
             }
         }
 
-        stage('Evaluate Model') {
-            steps {
+    // stage('Evaluate Model') {
+         //   steps {
                 // Evaluate the model
-                sh "${PYTHON} evaluate.py"
-            }
-        }
+       //         sh "${PYTHON} evaluate.py"
+         //   }
+        // }
 
         stage('Deploy Model') {
             steps {
