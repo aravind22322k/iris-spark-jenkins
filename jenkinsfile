@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        SPARK_SUBMIT = '/path/to/spark-submit' // Path to spark-submit
-        PYTHON = '/path/to/python'            // Path to Python interpreter
+        SPARK_SUBMIT = '/opt/spark/bin/spark-submit' // Path to spark-submit
+        PYTHON = '/usr/bin/python3'            // Path to Python interpreter
         MODEL_PATH = 'models/xgboost_model.json'
         DEPLOY_SCRIPT = 'deploy.py'
     }
