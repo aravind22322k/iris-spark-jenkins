@@ -1,23 +1,30 @@
-from xgboost import XGBClassifier
-from sklearn.metrics import classification_report
-import pandas as pd
 import numpy as np
-import joblib
+import xgboost as xgb
+import pandas as pd
 
 def evaluate_model(data_path, model_path):
-    # Load data
+    # Load the data
     df = pd.read_parquet(data_path)
-    X = pd.DataFrame(df['features'].tolist(), index=df.index)
-    y = df['label']
+    
+    # Check the type of the 'features' column to understand the structure
+    print(df["features"].head())  # Print the first few rows of the features column
 
-    # Load model
-    model = XGBClassifier()
+    # Extract the 'values' from the dictionaries in the 'features' column
+    X = np.array(df["features"].apply(lambda x: x['values']).tolist(), dtype=np.float32)
+
+    # Extract the labels (assumes the label column is named 'label')
+    y = df["label"].values
+
+    # Load the trained model
+    model = xgb.XGBClassifier()
     model.load_model(model_path)
 
-    # Predict
+    # Predict on the test data
     y_pred = model.predict(X)
-    print("Classification Report:")
-    print(classification_report(y, y_pred))
+
+    # Evaluate the model (you can add your evaluation metric, e.g., accuracy)
+    accuracy = (y_pred == y).mean()
+    print(f"Model accuracy: {accuracy * 100:.2f}%")
 
 if __name__ == "__main__":
     evaluate_model("data/preprocessed_data.parquet", "models/xgboost_model.json")
